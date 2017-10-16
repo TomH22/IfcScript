@@ -87,7 +87,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="WallPalette.cs" />
+    <Compile Include="Walls2.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

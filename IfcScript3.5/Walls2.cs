@@ -7,7 +7,15 @@ using GeometryGym.Ifc;
 
 namespace IFC.Examples
 {
-    class Room : IFCExampleInstance
+    /// <summary>
+    /// Author: Tom Hennersdorf
+    /// Build elements, which function in PaletteCAD.
+    /// 
+    /// Here are:
+    /// - 2 walls
+    /// - 1 door with mapped representation
+    /// </summary>
+    class Walls2 : IFCExampleInstance
     {
         protected override void GenerateInstance(IfcBuilding building)
         {
@@ -182,10 +190,10 @@ namespace IFC.Examples
             double lXRotation = -0.64278761 * lY + 0.76604444 * lX;
             double lYRotation = 0.76604444 * lY + 0.64278761 * lX;
 
-            IfcFace f5 = genFace(db, new IfcCartesianPoint(db, 0, 0, 0), 
-                new IfcCartesianPoint(db, lXRotation, lYRotation, 0), new IfcCartesianPoint(db, lXRotation, lYRotation , 2100), new IfcCartesianPoint(db, 0, 0, 2100));
+            IfcFace f5 = genFace(db, new IfcCartesianPoint(db, 0, 0, 0),
+                new IfcCartesianPoint(db, lXRotation, lYRotation, 0), new IfcCartesianPoint(db, lXRotation, lYRotation, 2100), new IfcCartesianPoint(db, 0, 0, 2100));
 
-            IfcConnectedFaceSet connectedFaceSet = new IfcConnectedFaceSet(new List<IfcFace>() {f1, f2, f3, f4, f5});
+            IfcConnectedFaceSet connectedFaceSet = new IfcConnectedFaceSet(new List<IfcFace>() { f1, f2, f3, f4, f5 });
 
             IfcFaceBasedSurfaceModel faceBasedSurfaceModel = new IfcFaceBasedSurfaceModel(new List<IfcConnectedFaceSet>() { connectedFaceSet });
 
@@ -199,9 +207,8 @@ namespace IFC.Examples
 
         private static IfcFace genFace(DatabaseIfc db, IfcCartesianPoint v1, IfcCartesianPoint v2, IfcCartesianPoint v3, IfcCartesianPoint v4)
         {
-            IfcPolyloop polyloop1 = new IfcPolyloop(new List<IfcCartesianPoint> { v1, v2, v3, v4});
+            IfcPolyloop polyloop1 = new IfcPolyloop(new List<IfcCartesianPoint> { v1, v2, v3, v4 });
             return new IfcFace(new IfcFaceOuterBound(polyloop1, true));
         }
     }
-
 }
