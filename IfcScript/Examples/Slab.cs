@@ -5,9 +5,9 @@ using System.Text;
 using System.Drawing;
 using GeometryGym.Ifc;
  
-using Coord2d = System.Tuple<double, double>;
-using Coord3d = System.Tuple<double, double, double>;
-using CoordIndex = System.Tuple<int, int, int>;
+using Coord2d = GeometryGym.Tuple<double, double>;
+using Coord3d = GeometryGym.Tuple<double, double, double>;
+using CoordIndex = GeometryGym.Tuple<int, int, int>;
 
 
 namespace IFC.Examples

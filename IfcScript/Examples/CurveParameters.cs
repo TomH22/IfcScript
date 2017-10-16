@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
+using GeometryGym;
 
-using Coord3d = System.Tuple<double, double, double>;
-using Coord2d = System.Tuple<double, double>;
+using Coord3d = GeometryGym.Tuple<double, double, double>;
+using Coord2d = GeometryGym.Tuple<double, double>;
 using GeometryGym.Ifc;
 
 namespace IFC.Examples

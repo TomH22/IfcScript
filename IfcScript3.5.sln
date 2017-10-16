@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfcScript3.5", "IfcScript3.5\IfcScript3.5.csproj", "{357630C4-5C04-47EF-ADB4-F509529F2C54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryGymIFC3.5", "..\GeometryGymIFC\DLL Projects\GeometryGymIFC3.5\GeometryGymIFC3.5.csproj", "{009E3E6A-12E1-4371-9644-A8F962759934}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{357630C4-5C04-47EF-ADB4-F509529F2C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{357630C4-5C04-47EF-ADB4-F509529F2C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{357630C4-5C04-47EF-ADB4-F509529F2C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{357630C4-5C04-47EF-ADB4-F509529F2C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{009E3E6A-12E1-4371-9644-A8F962759934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{009E3E6A-12E1-4371-9644-A8F962759934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{009E3E6A-12E1-4371-9644-A8F962759934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{009E3E6A-12E1-4371-9644-A8F962759934}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

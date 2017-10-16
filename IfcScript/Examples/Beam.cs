@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GeometryGym.Ifc;
-
-using CoordIndex = System.Tuple<int, int, int>;
-using Coord2d = System.Tuple<double, double>;
+using GeometryGym;
+using CoordIndex = GeometryGym.Tuple<int, int, int>;
+using Coord2d = GeometryGym.Tuple<double, double>;
 
 namespace IFC.Examples
 {
