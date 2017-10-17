@@ -3,10 +3,10 @@ HEADER;
 FILE_DESCRIPTION(('ViewDefinition [notYetAssigned]'),'2;1');
 FILE_NAME(
 /* name */ 'C:\\Users\\Tom\\Documents\\Visual Studio 2008\\Projects\\IfcScript\\IfcScript3.5\\examples\\Bath.ifc',
-/* time_stamp */ '2017-10-16T16:09:27',
+/* time_stamp */ '2017-10-17T12:31:48',
 /* author */ ('Tom'),
 /* organization */ ('Unknown'),
-/* preprocessor_version */ 'GeometryGymIFC3.5 v0.0.16.0 by Geometry Gym Pty Ltd built 2017-10-16T09:02:22',
+/* preprocessor_version */ 'GeometryGymIFC3.5 v0.0.16.0 by Geometry Gym Pty Ltd built 2017-10-17T10:31:35',
 /* originating_system */ 'IfcScript3.5 v0.0.1.0',
 /* authorization */ 'None');
 
@@ -24,7 +24,7 @@ DATA;
 #16= IFCPERSONANDORGANIZATION(#14,#15,$);
 #17= IFCAPPLICATION(#18,'0.0.16.0','IfcScript3.5 v0.0.1.0','IfcScript3.5 v0.0.1.0');
 #18= IFCORGANIZATION($,'Geometry Gym Pty Ltd',$,$,$);
-#19= IFCOWNERHISTORY(#16,#17,$,.ADDED.,1508162967,$,$,1508162967);
+#19= IFCOWNERHISTORY(#16,#17,$,.ADDED.,1508236308,$,$,1508236308);
 #20= IFCRELCONTAINEDINSPATIALSTRUCTURE('3Sa3dTJGn0H8TQIGiuGQd5',#19,'Building','Building Container for Elements',(#76),#13);
 #21= IFCPOSTALADDRESS($,$,$,$,('Unknown'),$,'Unknown',$,'Unknown','Unknown');
 /* general entities required for all IFC  sets, defining the context for the exchange */
