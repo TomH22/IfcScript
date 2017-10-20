@@ -38,6 +38,7 @@ namespace IFCExamples
             //new Slab().GenerateExample(path, ModelView.Ifc2x3Coordination);
             //new SlabOpenings().GenerateExample(path, ModelView.Ifc2x3Coordination);
             new Walls2().GenerateExample(path, ModelView.If2x3NotAssigned);
+            new DoorJust().GetDoorIFC();
             //new Wall().GenerateExample(path, ModelView.Ifc2x3Coordination);
             //todo wall with Openings
             new Bath().GenerateExample(path, ModelView.If2x3NotAssigned);
