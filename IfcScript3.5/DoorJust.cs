@@ -33,6 +33,7 @@ namespace IFC.Examples
             db.Factory.Options.GenerateOwnerHistory = false;
             db.Factory.Options.AngleUnitsInRadians = true;
             db.NextObjectRecord = line;
+            db.Release = ReleaseVersion.IFC2x3;
 
             // ==== Create OpeningElement just for the ID. ====
             IfcOpeningElement openingElement = new IfcOpeningElement(db);
@@ -84,6 +85,40 @@ namespace IFC.Examples
             string ifcString = extractDoorEntities(db);
 
             return ifcString;
+        }
+
+        private static string extractDoorEntities(DatabaseIfc db)
+        {
+            string ifcElements = db.GetEntitiesString();
+            List<String> ifcList = new List<string>(ifcElements.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries));
+
+            List<string> patterns = new List<string>() { "^#[0-9]*= IFCOPENINGELEMENT", "^#[0-9]*= IFCPERSON", "^#[0-9]*= IFCORGANIZATION"
+            , "^#[0-9]*= IFCPERSONANDORGANIZATION", "^#[0-9]*= IFCAPPLICATION", "^#[0-9]*= IFCOWNERHISTORY"};
+
+            for (int i = 0; i < ifcList.Count; )
+            {
+                bool contin = false;
+
+                foreach (string pattern in patterns)
+                {
+                    if (Regex.IsMatch(ifcList[i], pattern, RegexOptions.IgnoreCase))
+                    {
+                        ifcList.RemoveAt(i);
+                        contin = true;
+                        break;
+                    }
+                }
+
+                if (!contin)
+                    i++;
+            }
+
+            string result = "";
+            foreach (string ifcElem in ifcList)
+            {
+                result += ifcElem + "\r\n";
+            }
+            return result;
         }
     }
 }

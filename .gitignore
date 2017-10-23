@@ -193,3 +193,6 @@ FakesAssemblies/
 !GeomGymIFCx64.dll
 !Rhino3dmIO.dll
 !rhino3dmio_native.dll
+
+# IFC ignore examples
+**/examples/**
