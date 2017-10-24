@@ -41,7 +41,7 @@ namespace IFCExamples
             new DoorJust().GetDoorIFC();
             //new Wall().GenerateExample(path, ModelView.Ifc2x3Coordination);
             //todo wall with Openings
-            new Bath().GenerateExample(path, ModelView.If2x3NotAssigned);
+            //new Bath().GenerateExample(path, ModelView.If2x3NotAssigned);
             //new BasinAdvancedBrep().GenerateExample(path, ModelView.Ifc2x3Coordination);
             //new BasinBrep().GenerateExample(path, ModelView.Ifc2x3Coordination);
             //new BasinTessellation().GenerateExample(path, ModelView.Ifc2x3Coordination);
