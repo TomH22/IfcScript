@@ -73,6 +73,8 @@ namespace IFC
 		internal void GenerateExample(string path, ModelView modelView, bool radians)
 		{
 			DatabaseIfc database = GenerateDatabase(modelView, radians);
+
+
 			IfcBuilding building = new IfcBuilding(database, "IfcBuilding");
 			building.Comments.Add("defines the default building (as required as the minimum spatial element) ");
 			database.NextObjectRecord = 20;
@@ -91,7 +93,7 @@ namespace IFC
 			project.GlobalId = "0$WU4A9R19$vKWO$AdOnKA";
 			project.IsDecomposedBy[0].GlobalId = "091a6ewbvCMQ2Vyiqspa7a";
 
-			database[50].Comments.Add("Example data for " + this.GetType().Name);
+			database[50].Comments.Add("Data for " + this.GetType().Name);
 			WriteFile(database, path);
 		}
 		protected abstract void GenerateInstance(IfcBuilding building);

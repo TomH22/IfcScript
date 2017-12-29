@@ -18,20 +18,13 @@ namespace IFC.Examples
     ///     - different opening directions
     /// - 1 window with mapped representation
     /// </summary>
-    class Walls2 : IFCExampleInstance
+    class Walls : IFCExampleInstance
     {
-        private enum DoorSwing{
-            SingleSwingLeft,
-            SingleSwingLeftOtherSide,
-            SingleSwingRight,
-            SingleSwingRightOtherSide,
-            DoubleSwing,
-            DoubleSwingOtherSide
-        }
-
         protected override void GenerateInstance(IfcBuilding building)
         {
             DatabaseIfc db = building.Database;
+            building.Name = "Building";
+
 
             // ==== Material ====
             IfcMaterial material = new IfcMaterial(db, "Material");
@@ -90,11 +83,26 @@ namespace IFC.Examples
             // ==== Wall ====
             IfcProductDefinitionShape productDefinitionShape = new IfcProductDefinitionShape(shapeModelList);
             IfcWallStandardCase wallStandardCase = new IfcWallStandardCase(building, layerSetUsage, localPlacement, productDefinitionShape);
+            wallStandardCase.Name = "Wall with doors";
 
-            genOpeningForDoor(building, wallStandardCase, 300, DoorSwing.SingleSwingLeft);
-            genOpeningForDoor(building, wallStandardCase, 1800, DoorSwing.SingleSwingLeftOtherSide);
-            genOpeningForDoor(building, wallStandardCase, 3300, DoorSwing.SingleSwingRight);
-            genOpeningForDoor(building, wallStandardCase, 4800, DoorSwing.DoubleSwingOtherSide);
+
+            IfcDirection directionXDoor = new IfcDirection(db, 1, 0, 0);
+
+            Door door1 = new Door();
+            door1.DoorSwing = DoorSwing.SingleSwingLeft;
+            genDoor(building, wallStandardCase, door1, directionXDoor, new IfcCartesianPoint(db, 300 + 1500, 0, 0));
+
+            Door door2 = new Door();
+            door2.DoorSwing = DoorSwing.SingleSwingLeftOtherSide;
+            genDoor(building, wallStandardCase, door2, directionXDoor, new IfcCartesianPoint(db, 1800 + 1500, 0, 0));
+
+            Door door3 = new Door();
+            door3.DoorSwing = DoorSwing.SingleSwingRight;
+            genDoor(building, wallStandardCase, door3, directionXDoor, new IfcCartesianPoint(db, 3300 + 1500, 0, 0));
+
+            Door door4 = new Door();
+            door4.DoorSwing = DoorSwing.DoubleSwingOtherSide;
+            genDoor(building, wallStandardCase, door4, directionXDoor, new IfcCartesianPoint(db, 4800 + 1500, 0, 0));
             db.NextObjectRecord = 100;
         }
 
@@ -143,102 +151,39 @@ namespace IFC.Examples
             // ==== Wall ====
             IfcProductDefinitionShape productDefinitionShape = new IfcProductDefinitionShape(shapeModelList);
             IfcWallStandardCase wallStandardCase = new IfcWallStandardCase(building, layerSetUsage, axis2Placement3D, productDefinitionShape);
+            wallStandardCase.Name = "Wall with window";
 
-            genOpeningForWindow(building, wallStandardCase);
+            genWindow(building, wallStandardCase);
             db.NextObjectRecord = 100;
         }
 
-        private void genOpeningForDoor(IfcBuilding building, IfcWallStandardCase wall, double dist, DoorSwing doorSwing)
+        private void genDoor(IfcBuilding building, IfcWallStandardCase ifcWall, Door door, IfcDirection directionXOpening, IfcCartesianPoint cartesianPointOpening)
         {
-            double doorWidth = 900;
-            double doorHeight = 2000;
-            double doorThickness = 100;
+            IfcOpeningElement openingElement = genOpeningForDoor(ifcWall, door, directionXOpening, cartesianPointOpening);
 
-            DatabaseIfc db = wall.Database;
-
-            // ==== local placement ====
-            IfcLocalPlacement localPlacement = new IfcLocalPlacement(wall.Placement, new IfcAxis2Placement3D(new IfcCartesianPoint(db, dist + 1500, 0, 0)));
-
-            // ==== Body ====
-            IfcCartesianPoint p1 = new IfcCartesianPoint(db, 0, 0, 0);
-            IfcCartesianPoint p2 = new IfcCartesianPoint(db, 0, -doorThickness, 0);
-            IfcCartesianPoint p3 = new IfcCartesianPoint(db, doorWidth, -doorThickness, 0);
-            IfcCartesianPoint p4 = new IfcCartesianPoint(db, doorWidth, 0, 0);
-            IfcCartesianPoint p5 = new IfcCartesianPoint(db, 0, 0, 0);
-
-            IfcPolyline ifcPolylineBody = new IfcPolyline(new List<IfcCartesianPoint>() { p1, p2, p3, p4, p5 });
-
-            IfcArbitraryClosedProfileDef arbitraryClosedProfileDef = new IfcArbitraryClosedProfileDef("", ifcPolylineBody);
-
-            IfcExtrudedAreaSolid extrudedAreaSolid = new IfcExtrudedAreaSolid(arbitraryClosedProfileDef, new IfcAxis2Placement3D(new IfcCartesianPoint(db, 0, 0, 0)), doorHeight);
-
-            IfcShapeRepresentation bodyShape = new IfcShapeRepresentation(extrudedAreaSolid);
-
-            IfcProductRepresentation productRepresesentation = new IfcProductRepresentation(bodyShape);
-
-            // ==== Opening ====
-            IfcOpeningElement openingElement = new IfcOpeningElement(wall, localPlacement, productRepresesentation);
-            genDoor(building, openingElement, doorSwing, doorWidth, doorHeight, doorThickness);
-        }
-
-        private void genOpeningForWindow(IfcBuilding building, IfcWallStandardCase wall)
-        {
-            DatabaseIfc db = wall.Database;
-
-            // ==== local placement ====
-            IfcDirection directionZ = new IfcDirection(db, 0, 0, 1);
-            IfcDirection directionX = new IfcDirection(db, 1, 0, 0);
-            IfcLocalPlacement localPlacement = new IfcLocalPlacement(wall.Placement, new IfcAxis2Placement3D(new IfcCartesianPoint(db, 1500, 0, 1200), directionZ, directionX));
-
-            // ==== Body ====
-            IfcCartesianPoint p1 = new IfcCartesianPoint(db, 0, 0, 0);
-            IfcCartesianPoint p2 = new IfcCartesianPoint(db, 0, 100, 0);
-            IfcCartesianPoint p3 = new IfcCartesianPoint(db, 2000, 100, 0);
-            IfcCartesianPoint p4 = new IfcCartesianPoint(db, 2000, 0, 0);
-            IfcCartesianPoint p5 = new IfcCartesianPoint(db, 0, 0, 0);
-
-            IfcPolyline ifcPolylineBody = new IfcPolyline(new List<IfcCartesianPoint>() { p1, p2, p3, p4, p5 });
-
-            IfcArbitraryClosedProfileDef arbitraryClosedProfileDef = new IfcArbitraryClosedProfileDef("", ifcPolylineBody);
-
-            IfcExtrudedAreaSolid extrudedAreaSolid = new IfcExtrudedAreaSolid(arbitraryClosedProfileDef, new IfcAxis2Placement3D(new IfcCartesianPoint(db, 0, 0, 0)), 1200);
-
-            IfcShapeRepresentation bodyShape = new IfcShapeRepresentation(extrudedAreaSolid);
-
-            IfcProductRepresentation productRepresesentation = new IfcProductRepresentation(bodyShape);
-
-            // ==== Opening ====
-            IfcOpeningElement openingElement = new IfcOpeningElement(wall, localPlacement, productRepresesentation);
-            genWindow(building, openingElement);
-        }
-
-        private void genDoor(IfcBuilding building, IfcOpeningElement openingElement, DoorSwing doorSwing,
-            double doorWidth, double doorHeight, double doorThickness)
-        {
             DatabaseIfc db = openingElement.Database;
 
             // ==== local placement ====
-            IfcCartesianPoint cartesianPoint = null;  
+            IfcCartesianPoint cartesianPointDoor = null;
             IfcDirection directionZ = new IfcDirection(db, 0, 0, 1);
-            IfcDirection directionX = null;
-
-            switch (doorSwing)
+            IfcDirection directionXDoor = new IfcDirection(db, 1, 0, 0);
+            switch (door.DoorSwing)
             {
                 case DoorSwing.SingleSwingLeft:
                 case DoorSwing.SingleSwingRight:
                 case DoorSwing.DoubleSwing:
-                    cartesianPoint = new IfcCartesianPoint(db, 0, -doorThickness, 0);
-                    directionX = new IfcDirection(db, 1, 0, 0);
+                    cartesianPointDoor = new IfcCartesianPoint(db, 0, -door.Thickness, 0);
+                    directionXDoor = new IfcDirection(db, 1, 0, 0);
                     break;
                 case DoorSwing.SingleSwingLeftOtherSide:
                 case DoorSwing.SingleSwingRightOtherSide:
                 case DoorSwing.DoubleSwingOtherSide:
-                    cartesianPoint = new IfcCartesianPoint(db, doorWidth, 0, 0);
-                    directionX = new IfcDirection(db, -1, 0, 0);
+                    cartesianPointDoor = new IfcCartesianPoint(db, door.Width, 0, 0);
+                    directionXDoor = new IfcDirection(db, -1, 0, 0);
                     break;
             }
 
-            IfcLocalPlacement localPlacement = new IfcLocalPlacement(openingElement.Placement, new IfcAxis2Placement3D(cartesianPoint, directionZ, directionX));
+            IfcLocalPlacement localPlacement = new IfcLocalPlacement(openingElement.Placement, new IfcAxis2Placement3D(cartesianPointDoor, directionZ, directionXDoor));
 
 
             // ==== MappedRepresentation ====
@@ -247,6 +192,10 @@ namespace IFC.Examples
             IfcFace f2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 0), new IfcCartesianPoint(db, 0, 100, 0), new IfcCartesianPoint(db, 0, 100, 2110), new IfcCartesianPoint(db, 0, 0, 2110));
             IfcFace f3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 0, 0), new IfcCartesianPoint(db, 860, 100, 0), new IfcCartesianPoint(db, 860, 100, 2110), new IfcCartesianPoint(db, 860, 0, 2110));
             IfcFace f4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0), new IfcCartesianPoint(db, 860, 100, 0), new IfcCartesianPoint(db, 860, 100, 2110), new IfcCartesianPoint(db, 0, 100, 2110));
+            // bottom
+            IfcFace f5 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 0), new IfcCartesianPoint(db, 860, 0, 0), new IfcCartesianPoint(db, 860, 100, 0), new IfcCartesianPoint(db, 0, 100, 0));
+            // face up
+            IfcFace f6 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 2110), new IfcCartesianPoint(db, 860, 0, 2110), new IfcCartesianPoint(db, 860, 100, 2110), new IfcCartesianPoint(db, 0, 100, 2110));
 
             // door swing
             double lX = 860;
@@ -254,21 +203,23 @@ namespace IFC.Examples
             double lXRotation = -0.64278761 * lY + 0.76604444 * lX;
             double lYRotation = 0.76604444 * lY + 0.64278761 * lX;
 
-            IfcFace f5 = null;
-            IfcFace f6 = null;
+            // door plank
+            IfcFace f7 = null;
+            // If double door, the 2. face
+            IfcFace f8 = null;
 
-            switch (doorSwing)
+            switch (door.DoorSwing)
             {
                 case DoorSwing.SingleSwingLeft:
                 case DoorSwing.SingleSwingLeftOtherSide:
-                    f5 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0),
+                    f7 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0),
                          new IfcCartesianPoint(db, lXRotation, lYRotation, 0), new IfcCartesianPoint(db, lXRotation, lYRotation, 2110), new IfcCartesianPoint(db, 0, 100, 2110));
                     break;
                 case DoorSwing.SingleSwingRight:
                 case DoorSwing.SingleSwingRightOtherSide:
                     lXRotation = -0.64278761 * lY - 0.76604444 * lX + 860;
 
-                    f5 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 100, 0),
+                    f7 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 100, 0),
                          new IfcCartesianPoint(db, lXRotation, lYRotation, 0), new IfcCartesianPoint(db, lXRotation, lYRotation, 2110), new IfcCartesianPoint(db, 860, 100, 2110));
                     break;
                 case DoorSwing.DoubleSwing:
@@ -278,41 +229,44 @@ namespace IFC.Examples
                     lXRotation = -0.64278761 * lY + 0.76604444 * lX;
                     lYRotation = 0.76604444 * lY + 0.64278761 * lX;
 
-                    f5 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0),
+                    f7 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0),
                          new IfcCartesianPoint(db, lXRotation, lYRotation, 0), new IfcCartesianPoint(db, lXRotation, lYRotation, 2110), new IfcCartesianPoint(db, 0, 100, 2110));
 
                     lXRotation = -0.64278761 * lY - 0.76604444 * lX + 860;
 
-                    f6 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 100, 0),
+                    f8 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 100, 0),
                          new IfcCartesianPoint(db, lXRotation, lYRotation, 0), new IfcCartesianPoint(db, lXRotation, lYRotation, 2110), new IfcCartesianPoint(db, 860, 100, 2110));
                     break;
             }
 
-            List<IfcFace> facesList = new List<IfcFace>() { f1, f2, f3, f4, f5 };
-            if (f6 != null)
-                facesList.Add(f6);
+            List<IfcFace> facesList = new List<IfcFace>() { f1, f2, f3, f4, f7, f5, f6 };
+            if (f8 != null)
+                facesList.Add(f8);
 
             IfcConnectedFaceSet connectedFaceSet = new IfcConnectedFaceSet(facesList);
 
+            //IfcFaceBasedSurfaceModel faceBasedSurfaceModel = new IfcFaceBasedSurfaceModel(new List<IfcConnectedFaceSet>() { connectedFaceSet });
             IfcFaceBasedSurfaceModel faceBasedSurfaceModel = new IfcFaceBasedSurfaceModel(new List<IfcConnectedFaceSet>() { connectedFaceSet });
-
+           
             IfcRepresentationMap representationMap = new IfcRepresentationMap(faceBasedSurfaceModel);
 
             IfcCartesianTransformationOperator3DnonUniform trans = new IfcCartesianTransformationOperator3DnonUniform(db);
-            trans.Scale = doorWidth / 860.0;
-            trans.Scale2 = doorThickness / 100.0;
-            trans.Scale3 = doorHeight / 2110.0;
+            trans.Scale = door.Width / 860.0;
+            trans.Scale2 = door.Thickness / 100.0;
+            trans.Scale3 = door.Height / 2110.0;
 
             IfcMappedItem mappedItem = new IfcMappedItem(representationMap, trans);
             IfcShapeRepresentation shapeRepresentation = new IfcShapeRepresentation(mappedItem);
             IfcProductRepresentation productRepresesentation = new IfcProductRepresentation(shapeRepresentation);
 
             // ==== Door ====
-            IfcDoor door = new IfcDoor(building, openingElement, localPlacement, productRepresesentation);
+            IfcDoor ifcDoor = new IfcDoor(building, openingElement, localPlacement, productRepresesentation);
+            ifcDoor.OverallWidth = door.Width;
+            ifcDoor.OverallHeight = door.Height;
 
             // ==== IfcDoorStyle ====
             IfcDoorTypeOperationEnum doorTypeOperation = IfcDoorTypeOperationEnum.NOTDEFINED;
-            switch (doorSwing)
+            switch (door.DoorSwing)
             {
                 case DoorSwing.SingleSwingLeft:
                 case DoorSwing.SingleSwingLeftOtherSide:
@@ -328,11 +282,83 @@ namespace IFC.Examples
                     break;
             }
 
-            IfcDoorStyle doorStyle = new IfcDoorStyle(door, doorTypeOperation, IfcDoorStyleConstructionEnum.NOTDEFINED, false, false);
+            ifcDoor.Name = "Door " + door.Width.ToString("0") + "x" + door.Height.ToString("0");
+
+            //switch (door.DoorSwingV)
+            //{
+            //    case DoorSwing.SingleSwingLeft:
+            //        ifcDoor.Name = "Door single swing left";
+            //        break;
+            //    case DoorSwing.SingleSwingLeftOtherSide:
+            //        ifcDoor.Name = "Door single swing left other side";
+            //        break;
+            //    case DoorSwing.SingleSwingRight:
+            //        ifcDoor.Name = "Door single swing right";
+            //        break;
+            //    case DoorSwing.SingleSwingRightOtherSide:
+            //        ifcDoor.Name = "Door single swing right other side";
+            //        break;
+            //    case DoorSwing.DoubleSwing:
+            //        ifcDoor.Name = "Door double swing";
+            //        break;
+            //    case DoorSwing.DoubleSwingOtherSide:
+            //        ifcDoor.Name = "Door double swing other side";
+            //        break;
+            //}
+
+            IfcDoorStyle doorStyle = new IfcDoorStyle(ifcDoor, doorTypeOperation, IfcDoorStyleConstructionEnum.NOTDEFINED, false, false);
+
+            // ==== transparency ====
+            IfcColourRgb ifcColourRgb = new IfcColourRgb(db, 0.2, 0.2, 0.9);
+
+            IfcSurfaceStyleRendering ifcSurfaceStyleRendering = new IfcSurfaceStyleRendering(ifcColourRgb);//, 0.8, new IfcNormalisedRatioMeasure( 0.1 ), null, null, 
+            ifcSurfaceStyleRendering.Transparency = 0.8;
+            ifcSurfaceStyleRendering.DiffuseColour = new IfcNormalisedRatioMeasure(0.1);
+            ifcSurfaceStyleRendering.SpecularColour = new IfcNormalisedRatioMeasure(0.1);
+
+            IfcSurfaceStyle ifcSurfaceStyle = new IfcSurfaceStyle(ifcSurfaceStyleRendering);
+            ifcSurfaceStyle.Name = "blue transparency";
+
+            IfcStyledItem ifcStyledItem = new IfcStyledItem(ifcSurfaceStyle);
+            ifcStyledItem.Item = faceBasedSurfaceModel;
         }
 
-        private void genWindow(IfcBuilding building, IfcOpeningElement openingElement)
+        private static IfcOpeningElement genOpeningForDoor(IfcWallStandardCase ifcWall, Door door,
+            IfcDirection directionX, IfcCartesianPoint cartesianPoint)
         {
+            DatabaseIfc db = ifcWall.Database;
+
+            // ==== local placement ====
+            IfcDirection directionZ = new IfcDirection(db, 0, 0, 1);
+            IfcLocalPlacement localPlacement = new IfcLocalPlacement(ifcWall.Placement, new IfcAxis2Placement3D(cartesianPoint, directionZ, directionX));
+
+            // ==== Body ====
+            IfcCartesianPoint p1 = new IfcCartesianPoint(db, 0, 0, 0);
+            IfcCartesianPoint p2 = new IfcCartesianPoint(db, 0, -door.Thickness, 0);
+            IfcCartesianPoint p3 = new IfcCartesianPoint(db, door.Width, -door.Thickness, 0);
+            IfcCartesianPoint p4 = new IfcCartesianPoint(db, door.Width, 0, 0);
+            IfcCartesianPoint p5 = new IfcCartesianPoint(db, 0, 0, 0);
+
+            IfcPolyline ifcPolylineBody = new IfcPolyline(new List<IfcCartesianPoint>() { p1, p2, p3, p4, p5 });
+
+            IfcArbitraryClosedProfileDef arbitraryClosedProfileDef = new IfcArbitraryClosedProfileDef("", ifcPolylineBody);
+
+            IfcExtrudedAreaSolid extrudedAreaSolid = new IfcExtrudedAreaSolid(arbitraryClosedProfileDef, new IfcAxis2Placement3D(new IfcCartesianPoint(db, 0, 0, 0)), door.Height);
+
+            IfcShapeRepresentation bodyShape = new IfcShapeRepresentation(extrudedAreaSolid);
+
+            IfcProductRepresentation productRepresesentation = new IfcProductRepresentation(bodyShape);
+
+            // ==== Opening ====
+            IfcOpeningElement openingElement = new IfcOpeningElement(ifcWall, localPlacement, productRepresesentation);
+            openingElement.Name = "Opening";
+            return openingElement;
+        }
+
+        private void genWindow(IfcBuilding building, IfcWallStandardCase wall)
+        {
+            IfcOpeningElement openingElement = genOpeningForWindow(wall);
+
             DatabaseIfc db = openingElement.Database;
 
             // ==== local placement ====
@@ -394,6 +420,101 @@ namespace IFC.Examples
 
             // ==== Window ====
             IfcWindow window = new IfcWindow(building, openingElement, localPlacement, productRepresesentation);
+            window.Name = "Window";
         }
+
+        private static IfcOpeningElement genOpeningForWindow(IfcWallStandardCase wall)
+        {
+            DatabaseIfc db = wall.Database;
+
+            // ==== local placement ====
+            IfcDirection directionZ = new IfcDirection(db, 0, 0, 1);
+            IfcDirection directionX = new IfcDirection(db, 1, 0, 0);
+            IfcLocalPlacement localPlacement = new IfcLocalPlacement(wall.Placement, new IfcAxis2Placement3D(new IfcCartesianPoint(db, 1500, 0, 1200), directionZ, directionX));
+
+            // ==== Body ====
+            IfcCartesianPoint p1 = new IfcCartesianPoint(db, 0, 0, 0);
+            IfcCartesianPoint p2 = new IfcCartesianPoint(db, 0, 100, 0);
+            IfcCartesianPoint p3 = new IfcCartesianPoint(db, 2000, 100, 0);
+            IfcCartesianPoint p4 = new IfcCartesianPoint(db, 2000, 0, 0);
+            IfcCartesianPoint p5 = new IfcCartesianPoint(db, 0, 0, 0);
+
+            IfcPolyline ifcPolylineBody = new IfcPolyline(new List<IfcCartesianPoint>() { p1, p2, p3, p4, p5 });
+
+            IfcArbitraryClosedProfileDef arbitraryClosedProfileDef = new IfcArbitraryClosedProfileDef("", ifcPolylineBody);
+
+            IfcExtrudedAreaSolid extrudedAreaSolid = new IfcExtrudedAreaSolid(arbitraryClosedProfileDef, new IfcAxis2Placement3D(new IfcCartesianPoint(db, 0, 0, 0)), 1200);
+
+            IfcShapeRepresentation bodyShape = new IfcShapeRepresentation(extrudedAreaSolid);
+
+            IfcProductRepresentation productRepresesentation = new IfcProductRepresentation(bodyShape);
+
+            // ==== Opening ====
+            IfcOpeningElement openingElement = new IfcOpeningElement(wall, localPlacement, productRepresesentation);
+            openingElement.Name = "Opening";
+            return openingElement;
+        }
+    }
+
+
+    public enum DoorSwing
+    {
+        SingleSwingLeft,
+        SingleSwingLeftOtherSide,
+        SingleSwingRight,
+        SingleSwingRightOtherSide,
+        DoubleSwing,
+        DoubleSwingOtherSide
+    }
+
+    public class Vector3D
+    {
+        public Vector3D(double x, double y, double z)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+        }
+        public double X;
+        public double Y;
+        public double Z;
+    }
+
+    public class Polygon
+    {
+        public Polygon(List<Vector3D> geometry)
+        {
+            this.Geometry = geometry;
+        }
+        public List<Vector3D> Geometry;
+    }
+
+    public class Door
+    {
+        public Door()
+        {
+            Width = 900;
+            Height = 2000;
+            Thickness = 100;
+
+            Bottom = new Polygon(new List<Vector3D>() {
+                new Vector3D(0,0,0), 
+                new Vector3D(0, -Thickness, 0), 
+                new Vector3D(Width, -Thickness, 0),
+                new Vector3D(Width,0,0), 
+                new Vector3D(0,0,0)});
+
+            Dir = new Vector3D(1, 0, 0);
+
+            DoorSwing = DoorSwing.SingleSwingLeft;
+        }
+
+        public double Width;
+        public double Height;
+        public double Thickness;
+        public Polygon Bottom;
+        public Vector3D Dir;
+
+        public DoorSwing DoorSwing;
     }
 }
