@@ -28,8 +28,8 @@ namespace IFCExamples
 			string path = Path.Combine(di.FullName, "examples");
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
-			new BeamExtruded().GenerateExample(path,ModelView.Ifc4Reference);
-			new BeamTessellated().GenerateExample(path, ModelView.Ifc4Reference);
+			//new BeamExtruded().GenerateExample(path,ModelView.Ifc4Reference);
+			//new BeamTessellated().GenerateExample(path, ModelView.Ifc4Reference);
 			
 			new IndexedColourMap().GenerateExample(path,ModelView.Ifc4DesignTransfer);
 			new BeamUnitTestsVaryingProfile().GenerateExample(path, ModelView.Ifc4DesignTransfer);
@@ -39,8 +39,8 @@ namespace IFCExamples
 			new Slab().GenerateExample(path, ModelView.Ifc4DesignTransfer);
 			new SlabOpenings().GenerateExample(path, ModelView.Ifc4DesignTransfer);
 			new Wall().GenerateExample(path, ModelView.Ifc4DesignTransfer);
-			//todo wall with Openings
-			new Bath().GenerateExample(path, ModelView.Ifc4DesignTransfer);
+            new Walls().GenerateExample(path, ModelView.Ifc4DesignTransfer);
+            new Bath().GenerateExample(path, ModelView.Ifc4DesignTransfer);
 			new BasinAdvancedBrep().GenerateExample(path, ModelView.Ifc4DesignTransfer);
 			new BasinBrep().GenerateExample(path, ModelView.Ifc4DesignTransfer);
 			new BasinTessellation().GenerateExample(path, ModelView.Ifc4Reference);
