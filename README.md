@@ -17,6 +17,4 @@ contribute, then please don't hesitate to get in contact.
 # Plus on this fork
 - Visual Studio 2008 project
 - .NET 3.5 changes
-- an example wall2.cs, which builds an ifc file
-- the ifc file creates a door with a mapped representation
-- to import in PaletteCAD 9.17
+- new example: Walls.cs
