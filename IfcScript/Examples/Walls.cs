@@ -189,25 +189,26 @@ namespace IFC.Examples
 
             // ==== MappedRepresentation ====
             // Body
+            double fat = 50;
             IfcFace fLeft1 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 0), new IfcCartesianPoint(db, 0, 100, 0), new IfcCartesianPoint(db, 0, 100, 2110), new IfcCartesianPoint(db, 0, 0, 2110));
-            IfcFace fLeft2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 0), new IfcCartesianPoint(db, 20, 0, 20), new IfcCartesianPoint(db, 20, 0, 2090), new IfcCartesianPoint(db, 0, 0, 2110));
-            IfcFace fLeft3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0), new IfcCartesianPoint(db, 20, 100, 20), new IfcCartesianPoint(db, 20, 100, 2090), new IfcCartesianPoint(db, 0, 100, 2110));
-            IfcFace fLeft4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 20, 0, 20), new IfcCartesianPoint(db, 20, 100, 20), new IfcCartesianPoint(db, 20, 100, 2090), new IfcCartesianPoint(db, 20, 0, 2090));
+            IfcFace fLeft2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 0), new IfcCartesianPoint(db, fat, 0, fat), new IfcCartesianPoint(db, fat, 0, 2110 - fat), new IfcCartesianPoint(db, 0, 0, 2110));
+            IfcFace fLeft3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0), new IfcCartesianPoint(db, fat, 100, fat), new IfcCartesianPoint(db, fat, 100, 2090), new IfcCartesianPoint(db, 0, 100, 2110));
+            IfcFace fLeft4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, fat, 0, fat), new IfcCartesianPoint(db, fat, 100, fat), new IfcCartesianPoint(db, fat, 100, 2110 - fat), new IfcCartesianPoint(db, fat, 0, 2110 - fat));
 
             IfcFace fRight1 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 0, 0), new IfcCartesianPoint(db, 860, 100, 0), new IfcCartesianPoint(db, 860, 100, 2110), new IfcCartesianPoint(db, 860, 0, 2110));
-            IfcFace fRight2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 0, 0), new IfcCartesianPoint(db, 840, 0, 20), new IfcCartesianPoint(db, 840, 0, 2090), new IfcCartesianPoint(db, 860, 0, 2110));
-            IfcFace fRight3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 100, 0), new IfcCartesianPoint(db, 840, 100, 20), new IfcCartesianPoint(db, 840, 100, 2090), new IfcCartesianPoint(db, 860, 100, 2110));
-            IfcFace fRight4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 840, 0, 20), new IfcCartesianPoint(db, 840, 100, 20), new IfcCartesianPoint(db, 840, 100, 2090), new IfcCartesianPoint(db, 840, 0, 2090));    
+            IfcFace fRight2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 0, 0), new IfcCartesianPoint(db, 860 - fat, 0, fat), new IfcCartesianPoint(db, 860 - fat, 0, 2110 - fat), new IfcCartesianPoint(db, 860, 0, 2110));
+            IfcFace fRight3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860, 100, 0), new IfcCartesianPoint(db, 860 - fat, 100, fat), new IfcCartesianPoint(db, 860 - fat, 100, 2110 - fat), new IfcCartesianPoint(db, 860, 100, 2110));
+            IfcFace fRight4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 860 - fat, 0, fat), new IfcCartesianPoint(db, 860 - fat, 100, fat), new IfcCartesianPoint(db, 860 - fat, 100, 2110 - fat), new IfcCartesianPoint(db, 860 - fat, 0, 2110 - fat));    
 
             IfcFace fBottom1 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 0), new IfcCartesianPoint(db, 860, 0, 0), new IfcCartesianPoint(db, 860, 100, 0), new IfcCartesianPoint(db, 0, 100, 0));
-            IfcFace fBottom2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 0), new IfcCartesianPoint(db, 20, 0, 20), new IfcCartesianPoint(db, 840, 0, 20), new IfcCartesianPoint(db, 860, 0, 0));
-            IfcFace fBottom3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0), new IfcCartesianPoint(db, 20, 100, 20), new IfcCartesianPoint(db, 840, 100, 20), new IfcCartesianPoint(db, 860, 100, 0));
-            IfcFace fBottom4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 20, 0, 20), new IfcCartesianPoint(db, 20, 100, 20), new IfcCartesianPoint(db, 840, 100, 20), new IfcCartesianPoint(db, 840, 0, 20));
+            IfcFace fBottom2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 0), new IfcCartesianPoint(db, fat, 0, fat), new IfcCartesianPoint(db, 860 - fat, 0, fat), new IfcCartesianPoint(db, 860, 0, 0));
+            IfcFace fBottom3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 0), new IfcCartesianPoint(db, fat, 100, fat), new IfcCartesianPoint(db, 860 - fat, 100, fat), new IfcCartesianPoint(db, 860, 100, 0));
+            IfcFace fBottom4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, fat, 0, fat), new IfcCartesianPoint(db, fat, 100, fat), new IfcCartesianPoint(db, 860 - fat, 100, fat), new IfcCartesianPoint(db, 860 - fat, 0, fat));
 
             IfcFace fUp1 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 2110), new IfcCartesianPoint(db, 860, 0, 2110), new IfcCartesianPoint(db, 860, 100, 2110), new IfcCartesianPoint(db, 0, 100, 2110));
-            IfcFace fUp2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 2110), new IfcCartesianPoint(db, 20, 0, 2090), new IfcCartesianPoint(db, 840, 0, 2090), new IfcCartesianPoint(db, 860, 0, 2110));
-            IfcFace fUp3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 2110), new IfcCartesianPoint(db, 20, 100, 2090), new IfcCartesianPoint(db, 840, 100, 2090), new IfcCartesianPoint(db, 860, 100, 2110));
-            IfcFace fUp4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 20, 0, 2090), new IfcCartesianPoint(db, 20, 100, 2090), new IfcCartesianPoint(db, 840, 100, 2090), new IfcCartesianPoint(db, 840, 0, 2090));
+            IfcFace fUp2 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 0, 2110), new IfcCartesianPoint(db, fat, 0, 2110 - fat), new IfcCartesianPoint(db, 860 - fat, 0, 2110 - fat), new IfcCartesianPoint(db, 860, 0, 2110));
+            IfcFace fUp3 = IfcFace.GenFace(db, new IfcCartesianPoint(db, 0, 100, 2110), new IfcCartesianPoint(db, fat, 100, 2110 - fat), new IfcCartesianPoint(db, 860 - fat, 100, 2110 - fat), new IfcCartesianPoint(db, 860, 100, 2110));
+            IfcFace fUp4 = IfcFace.GenFace(db, new IfcCartesianPoint(db, fat, 0, 2110 - fat), new IfcCartesianPoint(db, fat, 100, 2110 - fat), new IfcCartesianPoint(db, 860 - fat, 100, 2110 - fat), new IfcCartesianPoint(db, 860 - fat, 0, 2110 - fat));
 
             // door swing
             double lX = 860;
@@ -322,10 +323,10 @@ namespace IFC.Examples
             IfcDoorStyle doorStyle = new IfcDoorStyle(ifcDoor, doorTypeOperation, IfcDoorStyleConstructionEnum.NOTDEFINED, false, false);
 
             // ==== transparency ====
-            IfcColourRgb ifcColourRgb = new IfcColourRgb(db, 0.2, 0.2, 0.9);
+            IfcColourRgb ifcColourRgb = new IfcColourRgb(db, 0.6, 0.6, 0.9);
 
             IfcSurfaceStyleRendering ifcSurfaceStyleRendering = new IfcSurfaceStyleRendering(ifcColourRgb);//, 0.8, new IfcNormalisedRatioMeasure( 0.1 ), null, null, 
-            ifcSurfaceStyleRendering.Transparency = 0.8;
+            ifcSurfaceStyleRendering.Transparency = 0.6;
             ifcSurfaceStyleRendering.DiffuseColour = new IfcNormalisedRatioMeasure(0.1);
             ifcSurfaceStyleRendering.SpecularColour = new IfcNormalisedRatioMeasure(0.1);
 
